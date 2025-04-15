@@ -1,12 +1,12 @@
 import customtkinter as ctk
-from Controlador.ControladoresDeVistas.ControladorVistaCalculadora import *
+from Controlador.ControladoresDeVistas.ControladorEntradas import *
 from Vista.Aplicacion.Componentes.BotonOpcion import *
 
 class MetodosDeEntradaFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master=master)
         self.configure(fg_color="#FAFAFA", corner_radius=0)
-        self.controlador_vistas_calculadora = ControladorVistaCalculadora()
+        self.controlador_entradas = ControladorEntradas()
         
         self.crear_widgets()
         self.configurar_widgets()
@@ -38,12 +38,12 @@ class MetodosDeEntradaFrame(ctk.CTkFrame):
     def seleccionar_frame(self, boton):
         if (boton != None):
             nombre_frame = boton.cget("text")
-            if (self.controlador_vistas_calculadora.es_frame_entrada_seleccionado(nombre_frame)):
+            if (self.controlador_entradas.frame_seleccionado_es(nombre_frame)):
                 return
             else: 
                 self.boton_seleccionado.configure(fg_color="transparent", text_color="#424242")
                 boton.configure(fg_color="#C8E6C9", text_color="#2e2e2c")
                 self.boton_seleccionado = boton
-                self.controlador_vistas_calculadora.cambiar_frame_entrada_a(nombre_frame)
+                self.controlador_entradas.cambiar_frame_a(nombre_frame)
         else:
             raise ValueError("Botón no válido")

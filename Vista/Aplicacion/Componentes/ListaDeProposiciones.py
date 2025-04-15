@@ -1,5 +1,7 @@
 import customtkinter as ctk
 from PIL import Image
+import re
+from Controlador.ControladoresDeVistas.ControladorPrincipal import ControladorVistaPrincipal
 
 class ListaDeProposiciones(ctk.CTkScrollableFrame):
     def __init__(self, master, proposiciones:list=[],**kwargs):
@@ -39,6 +41,12 @@ class ListaDeProposiciones(ctk.CTkScrollableFrame):
         self.boton_agregar.pack(fill="x", pady=10, ipady=8)
     
     def agregar_proposicion(self):
+        numero_proposiciones_agregadas = len(self.lista_de_proposiciones)
+        if (numero_proposiciones_agregadas > 0):
+            ultima_proposicion_agregada = self.lista_de_proposiciones[-1]
+            if (not ultima_proposicion_agregada.esta_fijada()):
+                return
+            
         nueva_proposicion = Proposicion(self)
         
         self.boton_agregar.pack_forget()
@@ -46,7 +54,7 @@ class ListaDeProposiciones(ctk.CTkScrollableFrame):
         self.boton_agregar.pack(fill="x", pady=10)
         
         self.lista_de_proposiciones.append(nueva_proposicion)
-    
+
     def bloquear_boton_agregar(self):
         self.boton_agregar.destroy()
         
@@ -72,6 +80,9 @@ class Proposicion(ctk.CTkFrame):
         self.configure(fg_color="#F1F1F1", border_color="gray", border_width=1, corner_radius=15)
         self.rowconfigure(0, weight=1)
         self.columnconfigure((0,1,2,3,4), weight=1, uniform="a")
+        self.controlador_vista_principal = ControladorVistaPrincipal()
+        self.nombre_esta_fijado = False
+        self.proposicion_esta_fijada = False
         
         self.crear_widgets()
         self.configurar_widgets()
@@ -85,7 +96,6 @@ class Proposicion(ctk.CTkFrame):
             border_width=2,
             corner_radius=10
             )
-        
         self.entrada_nombre = ctk.CTkEntry(
             master=self.cuadrado_entrada_nombre,
             border_color="#C8E6C9",
@@ -95,7 +105,6 @@ class Proposicion(ctk.CTkFrame):
             placeholder_text="q",
             placeholder_text_color="#F1F1F1"
             )
-            
         self.entrada_proposicion = ctk.CTkEntry(
             master=self,
             border_color="#F1F1F1",
@@ -104,22 +113,22 @@ class Proposicion(ctk.CTkFrame):
             text_color="#515151",
             placeholder_text="Proposicion"
             )
-        
         self.imagen_boton = ctk.CTkImage(
             light_image=Image.open("Vista//Materiales//trash.ico"),
             dark_image=Image.open("Vista//Materiales//trash.ico"),
             size=(32, 32)
             )
-        
         self.boton_borrar = ctk.CTkButton(
             master=self,
             text="",
             image=self.imagen_boton,
             )
-            
+
     def configurar_widgets(self):
         self.entrada_nombre.bind("<Return>", lambda evento: self.fijar_nombre(self.entrada_nombre.get()))
         self.entrada_proposicion.bind("<Return>", lambda evento: self.fijar_proposicion(self.entrada_proposicion.get()))
+        self.entrada_nombre.bind("<KeyRelease>", self.validar_entrada_nombre)
+        self.entrada_proposicion.bind("<KeyRelease>", self.validar_entrada_proposicion)
 
     def insertar_widgets(self):
         self.entrada_nombre.pack(padx=15, pady=5, anchor="center")
@@ -127,7 +136,7 @@ class Proposicion(ctk.CTkFrame):
         self.cuadrado_entrada_nombre.grid(row=0, column=0, sticky="nsew", padx=10, pady=15)
         self.entrada_proposicion.grid(row=0, column=1, columnspan=3, sticky="nsew", padx=10, pady=15)
         self.boton_borrar.grid(row=0, column=4, sticky="nsew", padx=10, pady=15)
-        
+
     def fijar_nombre(self, nombre):
         self.entrada_nombre.destroy()
         
@@ -138,7 +147,9 @@ class Proposicion(ctk.CTkFrame):
             text_color="#1A1A1A"
             )
         self.label_nombre.pack(pady=5, anchor="center")
-    
+        
+        self.nombre_esta_fijado = True
+
     def fijar_proposicion(self, proposicion):
         self.entrada_proposicion.destroy()
         
@@ -150,5 +161,46 @@ class Proposicion(ctk.CTkFrame):
         )
         self.label_proposicion.grid(row=0, column=1, columnspan=3, sticky="w", padx=10, pady=15)
         
+        self.proposicion_esta_fijada = True
+    
+    def esta_fijada(self)->bool:
+        if (self.nombre_esta_fijado and self.proposicion_esta_fijada):
+            return True
+        else:
+            return False
+
     def bloquear_boton_borrar(self):
         self.boton_borrar.destroy()
+
+    def validar_entrada_nombre(self, evento):
+        texto_actual = self.entrada_nombre.get()
+        
+        if evento.keysym == "BackSpace":
+            return
+        
+        if len(texto_actual) > 1:
+            self.entrada_nombre.delete(1, "end")
+            self.controlador_vista_principal.mostrar_advertencia("Solo se permite una letra", 3)
+            
+        if (texto_actual.isalpha()):
+            if (texto_actual.isupper()):
+                texto_actual = texto_actual.lower()
+                self.entrada_nombre.delete(0, "end")
+                self.entrada_nombre.insert(0, texto_actual)
+            else:
+                return
+        
+        else:
+            self.entrada_nombre.delete(0, "end")
+            self.controlador_vista_principal.mostrar_advertencia("Solo se permite letras", 3)
+
+    def patrón_es_valido(self, texto_nuevo: str)->bool:
+        patron_permitido = r'^[a-zA-Z0-9\- ]*$'  
+        return re.fullmatch(patron_permitido, texto_nuevo) is not None
+
+    def validar_entrada_proposicion(self, event)->None:
+        texto_actual = self.entrada_proposicion.get()
+        if not self.patrón_es_valido(texto_actual):
+            texto_filtrado = re.sub(r'[^a-zA-Z0-9\- ]', '', texto_actual)
+            self.entrada_proposicion.delete(0, ctk.END)
+            self.entrada_proposicion.insert(0, texto_filtrado)

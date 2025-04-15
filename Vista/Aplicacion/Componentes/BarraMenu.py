@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from Vista.Aplicacion.Componentes.BotonOpcion import BotonOpcion
-from Controlador.ControladoresDeVistas.ControladorFramesAplicacion import *
+from Controlador.ControladoresDeVistas.ControladorAplicacion import *
 import datetime
 
 class BarraMenu(ctk.CTkFrame):
@@ -41,7 +41,7 @@ class BarraMenu(ctk.CTkFrame):
     def seleccionar_frame(self, boton):
         if (boton != None):
             nombre_frame = boton.cget("text")
-            if (self.controlador_frame_aplicacion.is_frame_seleccionado(nombre_frame)):
+            if (self.controlador_frame_aplicacion.frame_seleccionado_es(nombre_frame)):
                 return
             else: 
                 self.boton_seleccionado.configure(fg_color="transparent", text_color="#424242")
@@ -50,7 +50,7 @@ class BarraMenu(ctk.CTkFrame):
                 self.controlador_frame_aplicacion.cambiar_frame_aplicacion_a(nombre_frame)
         else:
             raise ValueError("Botón no válido")
-            
+    
 
 class CuadradoConContenido(ctk.CTkFrame):
     def __init__(self, master:ctk.CTkFrame, texto:str):
