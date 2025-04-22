@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from Vista.Resultado.Componentes.ctktable import *
+from Vista.Resultado.VentanaNombre import *
 
 class ResultadosScrolleable(ctk.CTkScrollableFrame):
     def __init__(self, master, resultados:list, controlador, **kwargs):
@@ -55,6 +56,7 @@ class ResultadosScrolleable(ctk.CTkScrollableFrame):
     
     def configurar_widgets(self):
         self.boton_volver.bind("<Button-1>", self.volver)
+        self.boton_guardar.bind("<Button-1>", self.guardar)
     
     def insertar_widgets(self):
         self.titulo_label.pack(fill="x", padx=60, pady=10)
@@ -66,7 +68,14 @@ class ResultadosScrolleable(ctk.CTkScrollableFrame):
         self.frame_de_botones.pack(fill="x", pady=20, padx=500)
     
     def volver(self, evento):
-        self.controlador_vista_principal.cambiar_vista_a("Aplicacion")
+        self.destroy()
+        self.controlador_vista_principal.set_vista_seleccionada("Aplicacion")
+        self.controlador_vista_principal.volver_frame_aplicacion()
+    
+    def guardar(self, evento):
+        ventana =VentanaNombre(self, self.resultados[-1]["Proposiciones"])
+        ventana.wait_window()
+        self.controlador_vista_principal.volver_frame_aplicacion()
 
 
 class ResultadoFrame(ctk.CTkFrame):

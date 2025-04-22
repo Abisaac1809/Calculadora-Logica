@@ -1,9 +1,10 @@
 from Controlador.ControladoresDeVistas.ControladorPrincipal import *
 from Controlador.ControladoresDeVistas.ControladorEntradas import *
 from Controlador.ControladoresDeVistas.ControladorResultados import *
-from Modelo.ConvertidorFormulaATexto import * 
-from Modelo.GeneradorTablaDeVerdad import * 
-from Modelo.ConvertidorTextoAFormula import *
+from Modelo.Convertidores.ConvertidorFormulaATexto import * 
+from Modelo.Convertidores.GeneradorTablaDeVerdad import * 
+from Modelo.Convertidores.ConvertidorTextoAFormula import *
+from Modelo.Configuracion.GestionadorDelaConfiguracion import *
 
 class ControladorDeOperaciones():
     _instancia = None
@@ -59,6 +60,8 @@ class ControladorDeOperaciones():
             }
             resultados.append(nuevo_resultado)
         
+        self.convertidor_formula_a_texto = None
+        self.convertidor_formula_a_texto = ConvertidorFormulaATexto()
         return resultados
     
     def generar_resultado_extraccion(self, texto:str):
@@ -79,6 +82,8 @@ class ControladorDeOperaciones():
             }
             resultados.append(nuevo_resultado)
         
+        self.convertidor_texto_a_formula = None
+        self.convertidor_texto_a_formula = ConvertidorTextoAFormula()
         return resultados
     
     def generar_texto_convertido(self, proposiciones:dict, formulas:list):
@@ -106,6 +111,8 @@ class ControladorDeOperaciones():
 class ExtractorDeProposiciones():
     def __init__(self):
         self.controlador_tipo_entrada = ControladorEntradas()
+        configuracion_manager = ConfigManager()
+        self.configuracion = configuracion_manager.cargar_config()
         
         self.tipos_de_extraccion = {
             "Manual": self.extraer_proposiciones_manuales,
@@ -120,9 +127,9 @@ class ExtractorDeProposiciones():
 
     def extraer_proposiciones_manuales(self) -> list:
         proposiciones = self.controlador_tipo_entrada.get_diccionario_proposiciones_manuales()
-        if len(proposiciones) < 4:
+        if len(proposiciones) < self.configuracion["min_proposiciones"]:
             controlador_vista_principal = ControladorVistaPrincipal()
-            controlador_vista_principal.mostrar_advertencia("Debes ingresar al menos\n 4 proposiciones")
+            controlador_vista_principal.mostrar_advertencia(f"Debes ingresar al menos\n {self.configuracion["min_proposiciones"]} proposiciones")
             return None
         self.controlador_tipo_entrada.borrar_todas_las_proposiciones_manuales()
         

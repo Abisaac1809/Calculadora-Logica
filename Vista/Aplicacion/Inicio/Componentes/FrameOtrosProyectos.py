@@ -1,13 +1,15 @@
 import customtkinter as ctk
 from PIL import Image
+from Controlador.ControladoresDeUsuario.ControladorDeUsuario import *
+from Controlador.ControladoresDeVistas.ControladorEntradas import *
 
 class FrameOtrosProyectos(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master=master)
         self.configure(fg_color="#E8F5E9", corner_radius=20, border_width=1, border_color="#DADCE0")
         
-        #Insertar lógica para proyectos guardados
-        self.lista = [("hola", 2), ("vd", 5)]
+        self.controlador_usuario = ControladorDeUsuario()
+        self.lista_proyectos_del_usuario = self.controlador_usuario.get_lista_proyectos()
         
         self.crear_widgets()
         self.insertar_widgets()
@@ -20,7 +22,7 @@ class FrameOtrosProyectos(ctk.CTkFrame):
             font=("Poppins", 40, "bold")
             )
         
-        self.lista_otros_proyectos = ListaOtrosProyectos(self, self.lista)
+        self.lista_otros_proyectos = ListaOtrosProyectos(self, self.lista_proyectos_del_usuario)
     
     def insertar_widgets(self):
         self.titulo.place(relx=0.0, rely=0.02, relwidth=1, relheight=0.10)
@@ -45,30 +47,38 @@ class ListaOtrosProyectos(ctk.CTkScrollableFrame):
         else:
             raise ValueError("La lista de frames de proyectos es inválida")
     
-    def generar_lista_frames_de_proyectos(self, lista_proyectos_en_texto:list)->list:
-        longitud_lista_proyectos = len(lista_proyectos_en_texto)
+    def generar_lista_frames_de_proyectos(self, lista_proyectos:list)->list:
+        longitud_lista_proyectos = len(lista_proyectos)
         
-        if (longitud_lista_proyectos > 0 and lista_proyectos_en_texto != None):
+        if (longitud_lista_proyectos > 0):
             frames_de_proyectos = []
             
-            for nombre, numero_proyectos in lista_proyectos_en_texto:
-                nuevo_frame_proyecto = Proyecto(self, nombre, numero_proyectos)
+            for proyecto in lista_proyectos:
+                nombre = proyecto.nombre
+                numero_proposiciones = proyecto.numero_proposiciones
+                nuevo_frame_proyecto = Proyecto(self,proyecto)
                 frames_de_proyectos.append(nuevo_frame_proyecto)
-
+                
             return frames_de_proyectos
         else:
-            raise ValueError("La lista de proyectos en texto es inválida")
+            label = ctk.CTkLabel(
+                master=self,
+                text="Todavía no has realizado ningún proyecto",
+                font=("Poppins", 25)
+            )
+            return [label]
 
 
 class Proyecto(ctk.CTkFrame):
-    def __init__(self, master, nombre: str, numero_proposiciones: int, **kwargs):
+    def __init__(self, master, proyecto, **kwargs):
         super().__init__(master=master)
         self.configure(fg_color="#F1F1F1", border_color="gray", border_width=1, corner_radius=15)
         self.columnconfigure((0, 1, 2), weight=1, uniform="a")
         self.rowconfigure((0, 1), weight=1, uniform="a")
 
-        self.nombre = nombre
-        self.numero_proposiciones = numero_proposiciones
+        self.proyecto = proyecto
+        self.nombre = proyecto.nombre
+        self.numero_proposiciones = proyecto.numero_proposiciones
 
         self.crear_widgets()
         self.configurar_widgets()
@@ -103,9 +113,14 @@ class Proyecto(ctk.CTkFrame):
         )
 
     def configurar_widgets(self):
-        pass
+        self.boton_continuar.bind("<Button-1>", self.continuar)
 
     def insertar_widgets(self):
         self.nombre_label.grid(row=0, column=0, columnspan=2, sticky="w", padx=10, pady=5)
         self.numero_proposiciones_label.grid(row=1, column=0, columnspan=2, sticky="w", padx=10, pady=5)
         self.boton_continuar.grid(row=0, column=2, rowspan=2, sticky="e", padx=10, pady=5, ipady=5)
+
+    def continuar(self, evento):
+        controlador_entradas = ControladorEntradas()
+        proposiciones = self.proyecto.proposiciones
+        controlador_entradas.insertar_proposiciones_en_entrada(proposiciones)

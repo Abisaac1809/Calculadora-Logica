@@ -40,3 +40,8 @@ class EntradaManual(ctk.CTkFrame):
         self.titulo.place(relx=0.0, rely=0.02, relwidth=1, relheight=0.15)
         self.texto_label.place(relx=0.1, rely=0.2, relwidth=0.4, relheight=0.1)
         self.frame_lista_de_proposiciones.place(relx=0.1, rely=0.31, relwidth=0.8, relheight=0.60)
+
+    def insertar_proposiciones(self, proposiciones):
+        self.frame_lista_de_proposiciones.destroy()
+        self.frame_lista_de_proposiciones = ListaDeProposiciones(self, proposiciones)
+        self.frame_lista_de_proposiciones.place(relx=0.1, rely=0.31, relwidth=0.8, relheight=0.60)

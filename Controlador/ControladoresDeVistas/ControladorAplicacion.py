@@ -42,3 +42,7 @@ class ControladorFrameAplicacion():
                 return False
         else:
             raise ValueError("Nombre de frame inválido")
+        
+    def actualizar_proyectos_inicio(self):
+        frame = self.get_frame_de("Inicio")
+        frame.actualizar_proyectos_inicio()

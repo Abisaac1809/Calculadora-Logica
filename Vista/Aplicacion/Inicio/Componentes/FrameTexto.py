@@ -1,9 +1,14 @@
 import customtkinter as ctk
+from Controlador.ControladoresDeUsuario.ControladorDeUsuario import *
 
 class FrameTexto(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master=master)
         self.configure(fg_color="transparent")
+        
+        self.controlador_usuario = ControladorDeUsuario()
+        self.nombre_usuario = self.controlador_usuario.get_nombre_usuario()
+        self.proyectos_totales = self.controlador_usuario.get_numero_proyectos()
         
         self.crear_widgets()
         self.insertar_widgets()
@@ -11,7 +16,7 @@ class FrameTexto(ctk.CTkFrame):
     def crear_widgets(self):
         self.bienvenido_label = ctk.CTkLabel(
             master=self,
-            text="Buenos días, Abisaac",
+            text=f"Buenos días, {self.nombre_usuario}",
             text_color="#2e2e2c",
             font=("Poppins", 60, "bold"), 
             anchor="w"
@@ -27,7 +32,7 @@ class FrameTexto(ctk.CTkFrame):
         
         self.numero_de_proyectos_label = ctk.CTkLabel(
             master=self,
-            text="Proyectos totales\n2",
+            text=f"Proyectos totales\n{self.proyectos_totales}",
             text_color="#2e2e2c",
             font=("Poppins", 30, "bold")
             )   

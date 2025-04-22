@@ -78,3 +78,8 @@ class ControladorEntradas():
         controlador_aplicacion = ControladorFrameAplicacion()
         frame_calculadora = controlador_aplicacion.get_frame_de("Calculadora Lógica")
         frame_calculadora.reducir_entrada_frame()
+
+    def insertar_proposiciones_en_entrada(self, proposiciones):
+        frame_entrada = self.get_frame_de("Manual")
+        frame_entrada.insertar_proposiciones(proposiciones)
+        controlador = ControladorFrameAplicacion()

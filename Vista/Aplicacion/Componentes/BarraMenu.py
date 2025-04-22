@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from Vista.Aplicacion.Componentes.BotonOpcion import BotonOpcion
 from Controlador.ControladoresDeVistas.ControladorAplicacion import *
-import datetime
+from Controlador.ControladoresDeUsuario.ControladorDeUsuario import * 
 
 class BarraMenu(ctk.CTkFrame):
     def __init__(self, master:ctk.CTkFrame):
@@ -9,6 +9,13 @@ class BarraMenu(ctk.CTkFrame):
         self.configure(fg_color="#F5F7FA")
         
         self.controlador_frame_aplicacion = ControladorFrameAplicacion()
+        self.controlador_usuario = ControladorDeUsuario()
+        
+        inicial = self.controlador_usuario.get_inicial_nombre_usuario()
+        numero_proyectos = self.controlador_usuario.get_numero_proyectos()
+        self.inicial = ctk.StringVar(value=inicial)
+        self.numero_proyectos = ctk.StringVar(value=numero_proyectos)
+        
         
         self.crear_widgets()
         self.configurar_widgets()
@@ -19,8 +26,8 @@ class BarraMenu(ctk.CTkFrame):
         self.boton_seleccionado.configure(fg_color="#C8E6C9", text_color="#2e2e2c")
         
     def crear_widgets(self):
-        self.cuadrado_fecha = CuadradoConContenido(self, "14") # insertar fecha
-        self.cuadrado_perfil = CuadradoConContenido(self, "A") # insertar lógica de usuario
+        self.cuadrado_numero_proyectos = CuadradoConContenido(self, self.numero_proyectos) 
+        self.cuadrado_perfil = CuadradoConContenido(self, self.inicial) 
         
         self.frame_opciones_de_ventana = ctk.CTkFrame(self, fg_color="transparent")
         self.boton_inicio = BotonOpcion(self.frame_opciones_de_ventana, "Inicio")
@@ -31,7 +38,7 @@ class BarraMenu(ctk.CTkFrame):
         self.boton_calculadora_logica.bind("<Button-1>", lambda e: self.seleccionar_frame(self.boton_calculadora_logica))
     
     def insertar_widgets(self):
-        self.cuadrado_fecha.place(relx=0.01, rely=0.2, relwidth=0.04, relheight=0.6)
+        self.cuadrado_numero_proyectos.place(relx=0.01, rely=0.2, relwidth=0.04, relheight=0.6)
         self.cuadrado_perfil.place(relx=0.95, rely=0.2, relwidth=0.04, relheight=0.6)
         
         self.frame_opciones_de_ventana.place(relx=0.1, rely=0.0, relwidth=0.8, relheight=1)
@@ -53,7 +60,7 @@ class BarraMenu(ctk.CTkFrame):
     
 
 class CuadradoConContenido(ctk.CTkFrame):
-    def __init__(self, master:ctk.CTkFrame, texto:str):
+    def __init__(self, master:ctk.CTkFrame, variable:ctk.StringVar):
         super().__init__(master=master)
         self.configure(
             fg_color="white",
@@ -64,7 +71,7 @@ class CuadradoConContenido(ctk.CTkFrame):
         
         self.label = ctk.CTkLabel(
             master=self,
-            text= texto,
+            textvariable=variable,
             font=("Poppins", 25, "bold"),
             text_color="#515151"
             )

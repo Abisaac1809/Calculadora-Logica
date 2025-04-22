@@ -1,4 +1,4 @@
-from Modelo.Componentes.Nodo import *
+from Modelo.Convertidores.Componentes.Nodo import *
 class ArbolLogico:
     def __init__(self, formula: str):
         self.tokens = self.tokenizar(formula)

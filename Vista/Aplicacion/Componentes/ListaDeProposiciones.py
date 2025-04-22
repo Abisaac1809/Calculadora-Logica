@@ -8,6 +8,7 @@ class ListaDeProposiciones(ctk.CTkScrollableFrame):
         super().__init__(master=master)
         self.configure(fg_color="#F9FAFB", corner_radius=20, border_width=1, border_color="#DADCE0")
         self.controlador_vista_principal = ControladorVistaPrincipal()
+        
         longitud_lista_proporcionada = len(proposiciones)
         
         self.lista_de_proposiciones = []
@@ -74,18 +75,20 @@ class ListaDeProposiciones(ctk.CTkScrollableFrame):
         for frame_proposicion in self.lista_de_proposiciones:
             frame_proposicion.bloquear_boton_borrar()
     
-    def generar_proposiciones_por_texto(self, lista_proposiciones_texto:list) -> list:
+    def generar_proposiciones_por_texto(self, diccionario_proposiciones:dict) -> list:
+        lista_proposiciones_ingresadas = list(diccionario_proposiciones.items())
         lista_proposiciones = []
-        
-        for nombre,proposicion in lista_proposiciones_texto:
+            
+        for nombre,proposicion in lista_proposiciones_ingresadas:
             nueva_proposicion = Proposicion(self)
             nueva_proposicion.fijar_nombre(nombre)
             nueva_proposicion.fijar_proposicion(proposicion)
             
             lista_proposiciones.append(nueva_proposicion)
-
         return lista_proposiciones
-    
+
+            
+
     def borrar_toda_las_proposiciones(self):
         while self.lista_de_proposiciones:
             proposicion = self.lista_de_proposiciones.pop()

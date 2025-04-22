@@ -14,14 +14,14 @@ class ControladorVistaPrincipal():
         if not self.__class__._esta_inicializado: 
             if root_principal and vistas_principales:
                 self._root_principal = root_principal
-                self._vista_seleccionada = "Aplicacion"
+                self._vista_seleccionada = "Inicio Sesion"
                 
                 self.vistas_principales = vistas_principales
                 self.__class__._esta_inicializado = True
         
     def get_vista_principal_de(self, nombre_vista:str) -> ctk.CTkFrame:
         if (nombre_vista != None and self._root_principal != None):
-            vista_principal = self.vistas_principales.get(nombre_vista)
+            vista_principal = self.vistas_principales.get(nombre_vista)(self._root_principal)
             return vista_principal
         else:
             raise ValueError("No se ha encontrado la vista")
@@ -49,11 +49,17 @@ class ControladorVistaPrincipal():
     def mostrar_resultado(self, resultados:list[dict]):
         if (resultados != None):
             frame_resultado = ResultadosScrolleable(self._root_principal, resultados, self)
-            self._root_principal.cambiar_frame_a(frame_resultado)
+            self._root_principal.cambiar_frame_aplicacion(frame_resultado)
             self._vista_seleccionada = "Resultado"
         else: 
             raise ValueError("Los resultados son inválidos")
+    
+    def set_vista_seleccionada(self, nombre_vista):
+        self._vista_seleccionada = nombre_vista
         
+    def volver_frame_aplicacion(self):
+        self._root_principal.volver_frame_aplicacion()
+    
     def mostrar_advertencia(self, mensaje:str, duracion_en_segundos:int=2)->None:
         if (mensaje != None and duracion_en_segundos > 0):
             ToastAdvertencia(self._root_principal, mensaje, duracion_en_segundos)

@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from Vista.Aplicacion.FrameAplicacion import *
+from Vista.InicioDeSesion.InicioDeSesion import *
 from Vista.Resultado.FrameResultado import *
 from Controlador.ControladoresDeVistas.ControladorPrincipal import ControladorVistaPrincipal
 
@@ -15,14 +16,14 @@ class App(ctk.CTk):
         self.vistas_principales = self.get_vistas_principales()
         self.controlador_vista = ControladorVistaPrincipal(self, self.vistas_principales)
         
-        self._frame_default = "Aplicacion" #"Inicio Sesion"
+        self._frame_default = "Inicio Sesion"
         
         self.crear_frame()
         self.insertar_frame()
 
     def get_vistas_principales(self)->dict[str:ctk.CTkFrame]:
-        vista_inicio_sesion = 1 # InicioSesion(self) # Agregar instancia del inicio de sesion
-        vista_aplicacion = FrameAplicacion(self)
+        vista_inicio_sesion = InicioDeSesionFrame 
+        vista_aplicacion = FrameAplicacion
         
         vistas_principales = {
             "Inicio Sesion" : vista_inicio_sesion,
@@ -39,8 +40,21 @@ class App(ctk.CTk):
 
     def cambiar_frame_a(self, frame:ctk.CTkFrame):
         if (frame != None):
-            self.frame.pack_forget()
+            self.frame.destroy()
             self.frame = frame
             self.frame.pack(expand=True, fill="both")
         else:
             raise ValueError("Frame inválido")
+        
+    def cambiar_frame_aplicacion(self, frame:ctk.CTkFrame):
+        if (frame != None):
+            self.frame_aplicacion = self.frame
+            self.frame.pack_forget()
+            self.frame = frame
+            self.frame.pack(expand=True, fill="both")
+    
+    def volver_frame_aplicacion(self):
+        self.frame.pack_forget()
+        self.frame.destroy()
+        self.frame = self.frame_aplicacion
+        self.frame.pack(expand=True, fill="both")

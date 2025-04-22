@@ -1,0 +1,100 @@
+{
+    "usuarios": [
+        {
+            "nombre": "abisaac",
+            "contraseña": "$2b$12$l3dNturFWDEDIogUVmUiduYecc4a8CsPlBiuroNJ1czzMV7DdLp0y",
+            "proyectos": [
+                {
+                    "nombre": "mi_proyecto",
+                    "proposiciones": {
+                        "p": "Verdadero",
+                        "q": "Falso"
+                    }
+                }
+            ]
+        },
+        {
+            "nombre": "Abisaac",
+            "contraseña": "$2b$12$kR.J4C2ozq.WQnewv6liOO0aETv6l2MIgJYWkXQMbjnDdbbw1TPv.",
+            "proyectos": [
+                {
+                    "nombre": "proyecto1",
+                    "proposiciones": {
+                        "a": "Hola",
+                        "b": "Chao"
+                    }
+                },
+                {
+                    "nombre": "Proyecto2",
+                    "proposiciones": {
+                        "a": "Maria come arroz",
+                        "b": "Juan corre en el parque"
+                    }
+                },
+                {
+                    "nombre": "hoa",
+                    "proposiciones": {
+                        "a": "Ignacio come pasta",
+                        "b": "Juan juega en el parque"
+                    }
+                },
+                {
+                    "nombre": "ja",
+                    "proposiciones": {
+                        "a": "Hola",
+                        "b": "Chao"
+                    }
+                },
+                {
+                    "nombre": "xd",
+                    "proposiciones": {
+                        "a": "Hola",
+                        "b": "Chao"
+                    }
+                }
+            ]
+        },
+        {
+            "nombre": "Emily",
+            "contraseña": "$2b$12$ccsjI5DMJ/aisMm9ArV7E.M093QcWKsU/6Zx8MKOnSWHKXAuAfcDW",
+            "proyectos": [
+                {
+                    "nombre": "Proyecto1",
+                    "proposiciones": {
+                        "p": "maria va al gimnasio",
+                        "q": "juan toma ron",
+                        "r": "paola bebe cerveza",
+                        "s": "la profesora come chocolate"
+                    }
+                },
+                {
+                    "nombre": "hola",
+                    "proposiciones": {
+                        "a": "Maria come arroz",
+                        "b": "Juan corre en el parque"
+                    }
+                }
+            ]
+        },
+        {
+            "nombre": "Juan",
+            "contraseña": "$2b$12$1lEpMyyfxHz9HgBL5YnEBOQD3o4FFIkvFM8A0ddsaAfWQi0EvUe/y",
+            "proyectos": []
+        },
+        {
+            "nombre": "Mayerlin",
+            "contraseña": "$2b$12$FU8hCs4IjjaUcy3bR7wbiOXSis/ZQOt4DL6IeN0qkTJT3LoJHJyF.",
+            "proyectos": [
+                {
+                    "nombre": "proyecto1",
+                    "proposiciones": {
+                        "p": "la profesora come chocolate",
+                        "q": "Abisaac come pollo",
+                        "r": "Maduro no es presidente",
+                        "s": "Los roques es hermoso"
+                    }
+                }
+            ]
+        }
+    ]
+}

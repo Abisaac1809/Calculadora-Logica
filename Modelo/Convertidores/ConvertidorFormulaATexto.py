@@ -1,4 +1,4 @@
-from Modelo.Componentes.ArbolLogico import *
+from Modelo.Convertidores.Componentes.ArbolLogico import *
 
 class ConvertidorFormulaATexto:
     def __init__(self):
