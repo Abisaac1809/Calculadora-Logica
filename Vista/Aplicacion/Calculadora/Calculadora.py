@@ -22,3 +22,11 @@ class CalculadoraFrame(ctk.CTkFrame):
         self.metodos_entrada_frame.place(relx=0.0, rely=0.001, relwidth=0.2, relheight=1)
         self.entrada_frame.place(relx=0.201, rely=0.001, relwidth=0.499, relheight=1)
         self.resultados_frame.place(relx=0.701, rely=0.001, relwidth=0.3, relheight=1)
+    
+    def agrandar_entrada_frame(self):
+        self.resultados_frame.place_forget()
+        self.entrada_frame.place(relx=0.201, rely=0.001, relwidth=0.799, relheight=1)
+    
+    def reducir_entrada_frame(self):
+        self.entrada_frame.place(relx=0.201, rely=0.001, relwidth=0.499, relheight=1)
+        self.resultados_frame.place(relx=0.701, rely=0.001, relwidth=0.3, relheight=1)

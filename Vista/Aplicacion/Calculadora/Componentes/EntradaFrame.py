@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from Controlador.ControladoresDeVistas.ControladorEntradas import *
+from Controlador.ControladoresDeVistas.ControladorEntradas import ControladorEntradas
 from Vista.Aplicacion.Calculadora.Componentes.Entradas.EntradaManual import *
 from Vista.Aplicacion.Calculadora.Componentes.Entradas.EntradaExtraccion import *
 
@@ -13,12 +13,6 @@ class EntradaFrame(ctk.CTkFrame):
         self.crear_widgets()
         self.insertar_widgets()
     
-    def crear_widgets(self):
-        self.frame = self.controlador_vista_entradas.get_frame_de(self.nombre_frame_default)
-    
-    def insertar_widgets(self):
-        self.frame.pack(expand=True, fill="both")
-    
     def get_vistas_de_entrada(self):
         vista_entrada_manual = EntradaManual(self)
         vista_entrada_extraccion = EntradaExtraccion(self)
@@ -29,7 +23,13 @@ class EntradaFrame(ctk.CTkFrame):
         }
         
         return vistas_de_entrada
-
+    
+    def crear_widgets(self):
+        self.frame = self.controlador_vista_entradas.get_frame_de(self.nombre_frame_default)
+    
+    def insertar_widgets(self):
+        self.frame.pack(expand=True, fill="both")
+    
     def cambiar_frame_a(self, frame: ctk.CTkFrame) -> None:
         if (frame != None):
             self.frame.pack_forget()

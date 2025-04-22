@@ -14,7 +14,7 @@ class FrameAplicacion(ctk.CTkFrame):
         
         self.crear_widgets()
         self.insertar_widgets()
-    
+
     def get_vistas_aplicacion(self)->dict[str:ctk.CTkFrame]:
         vista_inicio = InicioFrame(self)
         vista_calculadora = CalculadoraFrame(self)

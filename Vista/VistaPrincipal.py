@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from Vista.Aplicacion.FrameAplicacion import *
+from Vista.Resultado.FrameResultado import *
 from Controlador.ControladoresDeVistas.ControladorPrincipal import ControladorVistaPrincipal
 
 class App(ctk.CTk):
@@ -14,10 +15,10 @@ class App(ctk.CTk):
         self.vistas_principales = self.get_vistas_principales()
         self.controlador_vista = ControladorVistaPrincipal(self, self.vistas_principales)
         
-        self._frame_actual = None #self.controlador_vista.get_vista_principal_de("Inicio Sesion")
+        self._frame_default = "Aplicacion" #"Inicio Sesion"
         
-        # Eliminar después de pruebas
-        self.set_frame_actual("Aplicacion")
+        self.crear_frame()
+        self.insertar_frame()
 
     def get_vistas_principales(self)->dict[str:ctk.CTkFrame]:
         vista_inicio_sesion = 1 # InicioSesion(self) # Agregar instancia del inicio de sesion
@@ -25,18 +26,21 @@ class App(ctk.CTk):
         
         vistas_principales = {
             "Inicio Sesion" : vista_inicio_sesion,
-            "Aplicacion" : vista_aplicacion
+            "Aplicacion" : vista_aplicacion,
         }
         
         return vistas_principales
-        
-    def set_frame_actual(self, nombre_frame:str) -> None:
-        if (nombre_frame != None):
-            
-            if self._frame_actual != None:
-                self._frame_actual.destroy()
-                
-            self._frame_actual = self.controlador_vista.get_vista_principal_de(nombre_frame)
-            self._frame_actual.place(relx=0.0, rely=0.0, relwidth=1, relheight=1)
+
+    def crear_frame(self):
+        self.frame = self.controlador_vista.get_vista_principal_de(self._frame_default)
+
+    def insertar_frame(self):
+        self.frame.pack(expand=True, fill="both")
+
+    def cambiar_frame_a(self, frame:ctk.CTkFrame):
+        if (frame != None):
+            self.frame.pack_forget()
+            self.frame = frame
+            self.frame.pack(expand=True, fill="both")
         else:
-            raise ValueError("No se ha encontrado el frame")
+            raise ValueError("Frame inválido")

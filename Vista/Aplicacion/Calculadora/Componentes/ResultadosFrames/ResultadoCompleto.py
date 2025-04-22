@@ -5,6 +5,11 @@ class ResultadoCompleto(ctk.CTkFrame):
         super().__init__(master=master)
         self.configure(fg_color="transparent")
         
+        self.se_debe_hacer_conjuncion = ctk.BooleanVar(value=True)
+        self.se_debe_hacer_disyuncion = ctk.BooleanVar(value=True)
+        self.se_debe_hacer_condicional = ctk.BooleanVar(value=True)
+        self.se_debe_hacer_bicondicional = ctk.BooleanVar(value=True)
+        
         self.crear_widgets()
         self.configurar_widgets()
         self.insertar_widgets()
@@ -20,42 +25,37 @@ class ResultadoCompleto(ctk.CTkFrame):
             master=self,
             text="Conjuncion",
             font=("Poppins", 20),
-            onvalue=1,
-            offvalue=0
+            onvalue=True,
+            offvalue=False,
+            variable=self.se_debe_hacer_conjuncion
             )
     
         self.disyuncion_opcion = ctk.CTkCheckBox(
             master=self,
             text="Disyuncion",
             font=("Poppins", 20),
-            onvalue=1,
-            offvalue=0
+            onvalue=True,
+            offvalue=False,
+            variable=self.se_debe_hacer_disyuncion
             )
         
         self.condicional_opcion = ctk.CTkCheckBox(
             master=self,
             text="Conjuncion",
             font=("Poppins", 20),
-            onvalue=1,
-            offvalue=0
+            onvalue=True,
+            offvalue=False,
+            variable=self.se_debe_hacer_condicional
             )
         
         self.bicondicional_opcion = ctk.CTkCheckBox(
             master=self,
             text="Bicondicional",
             font=("Poppins", 20),
-            onvalue=1,
-            offvalue=0
+            onvalue=True,
+            offvalue=False,
+            variable=self.se_debe_hacer_bicondicional
             )
-
-        self.negacion_opcion = ctk.CTkCheckBox(
-            master=self,
-            text="Negación",
-            font=("Poppins", 20),
-            onvalue=1,
-            offvalue=0
-            )
-
     
     def configurar_widgets(self):
         pass
@@ -66,4 +66,20 @@ class ResultadoCompleto(ctk.CTkFrame):
         self.disyuncion_opcion.pack(expand= True, fill="both", pady=10, padx=50)
         self.condicional_opcion.pack(expand= True, fill="both", pady=10, padx=50)
         self.bicondicional_opcion.pack(expand= True, fill="both", pady=10, padx=50)
-        self.negacion_opcion.pack(expand= True, fill="both", pady=(10,40), padx=50)
+    
+    def get_nombre_formulas_que_se_deben_hacer(self):
+        nombres_formulas_que_se_deben_hacer = []
+        
+        if self.se_debe_hacer_conjuncion.get():
+            nombres_formulas_que_se_deben_hacer.append("Conjuncion")
+            
+        if self.se_debe_hacer_disyuncion.get():
+            nombres_formulas_que_se_deben_hacer.append("Disyuncion")
+            
+        if self.se_debe_hacer_condicional.get():
+            nombres_formulas_que_se_deben_hacer.append("Condicional")
+            
+        if self.se_debe_hacer_bicondicional.get():
+            nombres_formulas_que_se_deben_hacer.append("Bicondicional")
+        
+        return nombres_formulas_que_se_deben_hacer

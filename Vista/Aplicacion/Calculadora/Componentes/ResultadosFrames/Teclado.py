@@ -1,32 +1,32 @@
 import customtkinter as ctk
 
 class Teclado(ctk.CTkFrame):
-    def __init__(self, master, entry):
+    def __init__(self, master, entrada):
         super().__init__(master=master, fg_color="transparent")
         self.master = master
-        self.entry = entry
+        self.entrada = entrada
         self.rowconfigure((0,1), weight=1)
         self.columnconfigure((0,1,2,3), weight=1)
         
         self.crear_widgets()
-        # self.configurar_widgets()
-        self.grid_widgets()
+        self.configurar_widgets()
+        self.insertar_widgets()
 
     def crear_widgets(self):
-        self.boton_disyuncion = Boton(self, "∧", self.entry, True)
-        self.boton_conjuncion = Boton(self, "∨", self.entry, True)
-        self.boton_condicional = Boton(self, "→", self.entry, True)
-        self.boton_bicondicional = Boton(self, "↔", self.entry, True)
-        self.boton_negacion = Boton(self, "¬", self.entry, True)
-        self.boton_parentesis_abre = Boton(self, "(", self.entry, True)
-        self.boton_parentesis_cierra = Boton(self, ")", self.entry, True)
-        self.boton_borrar = Boton(self, "AC", self.entry, False)
+        self.boton_disyuncion = Boton(self, "∧", self.entrada, True)
+        self.boton_conjuncion = Boton(self, "∨", self.entrada, True)
+        self.boton_condicional = Boton(self, "→", self.entrada, True)
+        self.boton_bicondicional = Boton(self, "↔", self.entrada, True)
+        self.boton_negacion = Boton(self, "¬", self.entrada, True)
+        self.boton_parentesis_abre = Boton(self, "(", self.entrada, True)
+        self.boton_parentesis_cierra = Boton(self, ")", self.entrada, True)
+        self.boton_borrar = Boton(self, "AC", self.entrada, False)
     
     def configurar_widgets(self):
-        self.boton_borrar.bind("<Button-1>", lambda e: self.entry.delete(0, "end"))
-        self.entry.bind("<Return>", self.realizar_operacion)
+        self.boton_borrar.bind("<Button-1>", lambda e: self.entrada.delete(0, "end"))
+        #self.entrada.bind("<Return>", self.realizar_operacion)
 
-    def grid_widgets(self):
+    def insertar_widgets(self):
         self.boton_disyuncion.grid(row=0, column=0, sticky="nswe", padx=5, pady=5)
         self.boton_conjuncion.grid(row=0, column=1, sticky="nswe", padx=5, pady=5)
         self.boton_condicional.grid(row=0, column=2, sticky="nswe", padx=5, pady=5)
@@ -37,8 +37,8 @@ class Teclado(ctk.CTkFrame):
         self.boton_borrar.grid(row=1, column=3, sticky="nswe", padx=5, pady=5)
 
     def realizar_operacion(self, evento):
-        operacion = self.entry.get()
-        self.entry.delete(0, "end")
+        operacion = self.entrada.get()
+        self.entrada.delete(0, "end")
         self.controlador.realizar_operacion(operacion, self.label)
 
 class Boton(ctk.CTkButton):

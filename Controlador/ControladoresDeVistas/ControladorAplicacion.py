@@ -1,7 +1,3 @@
-from Vista.Aplicacion.FrameAplicacion import *
-from Vista.Aplicacion.Calculadora.Calculadora import * 
-from Vista.Aplicacion.Inicio.Inicio import *
-
 class ControladorFrameAplicacion():
     _instancia = None
     _esta_inicializado = False
@@ -11,7 +7,7 @@ class ControladorFrameAplicacion():
             cls._instancia = super().__new__(cls)
         return cls._instancia
     
-    def __init__(self, frame_aplicacion:ctk.CTkFrame=None, vistas_aplicacion:dict=None):
+    def __init__(self, frame_aplicacion=None, vistas_aplicacion:dict=None):
         if not self.__class__._esta_inicializado:
             if (frame_aplicacion != None and vistas_aplicacion !=None): 
                 self._frame_aplicacion = frame_aplicacion
@@ -20,13 +16,13 @@ class ControladorFrameAplicacion():
                 
                 self.__class__._esta_inicializado = True
     
-    def get_frame_de(self, nombre_frame:str) -> ctk.CTkFrame:
+    def get_frame_de(self, nombre_frame:str):
         if (nombre_frame != "" and nombre_frame !=None):
             frame = self.vistas_aplicacion.get(nombre_frame)
             return frame
         else:
             raise ValueError("Nombre del frame es inválido")
-        
+    
     def cambiar_frame_aplicacion_a(self, nombre_frame:str) -> None:
         if (nombre_frame != "" and nombre_frame != None):
             if (self.frame_seleccionado_es(nombre_frame)):

@@ -59,6 +59,7 @@ class ListaOtrosProyectos(ctk.CTkScrollableFrame):
         else:
             raise ValueError("La lista de proyectos en texto es inválida")
 
+
 class Proyecto(ctk.CTkFrame):
     def __init__(self, master, nombre: str, numero_proposiciones: int, **kwargs):
         super().__init__(master=master)

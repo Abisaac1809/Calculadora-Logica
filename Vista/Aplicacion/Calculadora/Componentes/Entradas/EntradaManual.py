@@ -10,6 +10,12 @@ class EntradaManual(ctk.CTkFrame):
         self.configurar_widgets()
         self.insertar_widgets()
     
+    def get_lista_proposiciones(self):
+        return self.frame_lista_de_proposiciones.get_lista_proposiciones()
+    
+    def borrar_todas_las_proposiciones(self):
+        self.frame_lista_de_proposiciones.borrar_toda_las_proposiciones()
+    
     def crear_widgets(self):
         self.titulo = ctk.CTkLabel(
             master=self,
@@ -25,7 +31,7 @@ class EntradaManual(ctk.CTkFrame):
             font=("Poppins", 30)
             )
         
-        self.lista_de_proposiciones = ListaDeProposiciones(self)
+        self.frame_lista_de_proposiciones = ListaDeProposiciones(self)
 
     def configurar_widgets(self):
         pass
@@ -33,4 +39,4 @@ class EntradaManual(ctk.CTkFrame):
     def insertar_widgets(self):
         self.titulo.place(relx=0.0, rely=0.02, relwidth=1, relheight=0.15)
         self.texto_label.place(relx=0.1, rely=0.2, relwidth=0.4, relheight=0.1)
-        self.lista_de_proposiciones.place(relx=0.1, rely=0.31, relwidth=0.8, relheight=0.60)
+        self.frame_lista_de_proposiciones.place(relx=0.1, rely=0.31, relwidth=0.8, relheight=0.60)

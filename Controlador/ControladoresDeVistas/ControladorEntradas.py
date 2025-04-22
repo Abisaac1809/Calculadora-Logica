@@ -1,3 +1,5 @@
+from Controlador.ControladoresDeVistas.ControladorAplicacion import *
+
 class ControladorEntradas():
     _instancia = None
     _esta_inicializado = False
@@ -13,9 +15,12 @@ class ControladorEntradas():
                 
                 self._frame_entrada = frame_entrada
                 self.vistas_entradas = vistas_entrada
-                self.nombre_vista_seleccionada = "Manual"
+                self.nombre_tipo_entrada_seleccionada = "Manual"
                 
                 self.__class__._esta_inicializado = True
+    
+    def get_nombre_tipo_entrada_seleccionada(self) -> str:
+        return self.nombre_tipo_entrada_seleccionada
     
     def get_frame_de(self, nombre_vista:str):
         if (nombre_vista != None and nombre_vista !=""):
@@ -24,9 +29,25 @@ class ControladorEntradas():
         else:
             raise ValueError("El nombre de la vista es inválido")
     
+    def get_diccionario_proposiciones_manuales(self):
+        frame_entrada_manual = self.get_frame_de("Manual")
+        proposiciones = frame_entrada_manual.get_lista_proposiciones()
+        diccionario_de_proposiciones = {}
+        
+        for proposicion in proposiciones:
+            nombre = proposicion.get_nombre()
+            proposicion_texto = proposicion.get_proposicion()
+            diccionario_de_proposiciones[nombre] = proposicion_texto
+        
+        return diccionario_de_proposiciones
+    
+    def borrar_todas_las_proposiciones_manuales(self):
+        frame_entrada_manual = self.get_frame_de("Manual")
+        frame_entrada_manual.borrar_todas_las_proposiciones()
+    
     def frame_seleccionado_es(self, nombre_frame: str) -> bool:
         if (nombre_frame != "" and nombre_frame != None):
-            if (self.nombre_vista_seleccionada == nombre_frame):
+            if (self.nombre_tipo_entrada_seleccionada == nombre_frame):
                 return True
             else:
                 return False
@@ -40,6 +61,20 @@ class ControladorEntradas():
             else:
                 frame = self.get_frame_de(nombre_frame)
                 self._frame_entrada.cambiar_frame_a(frame)
-                self.nombre_vista_seleccionada = nombre_frame
+                if (nombre_frame == "Manual"):
+                    self.reducir_entrada_frame()
+                else:
+                    self.agrandar_entrada_frame()
+                self.nombre_tipo_entrada_seleccionada = nombre_frame
         else: 
             raise ValueError("Nombre del frame es inválido")
+    
+    def agrandar_entrada_frame(self):
+        controlador_aplicacion = ControladorFrameAplicacion()
+        frame_calculadora = controlador_aplicacion.get_frame_de("Calculadora Lógica")
+        frame_calculadora.agrandar_entrada_frame()
+    
+    def reducir_entrada_frame(self):
+        controlador_aplicacion = ControladorFrameAplicacion()
+        frame_calculadora = controlador_aplicacion.get_frame_de("Calculadora Lógica")
+        frame_calculadora.reducir_entrada_frame()
